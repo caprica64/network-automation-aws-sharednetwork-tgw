@@ -1,0 +1,35 @@
+terraform {
+  required_providers {
+	aws = {
+	  source = "hashicorp/aws"
+	  version = "4.20.1"
+	}
+  }
+}
+
+provider "aws" {
+  # Configuration options
+  region = "eu-west-1"
+}
+
+locals {
+  region = "eu-west-1"
+  #region = var.region
+}
+
+
+# module "vpc" {
+#   source  = "terraform-aws-modules/vpc/aws"
+#   version = "~> 3.0"
+# 
+#   name = "my-vpc"
+# 
+#   cidr = "10.10.0.0/16"
+# 
+#   azs             = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
+#   private_subnets = ["10.10.1.0/24", "10.10.2.0/24", "10.10.3.0/24"]
+# 
+#   enable_ipv6                                    = true
+#   private_subnet_assign_ipv6_address_on_creation = true
+#   private_subnet_ipv6_prefixes                   = [0, 1, 2]
+# }
