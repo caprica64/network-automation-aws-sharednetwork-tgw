@@ -29,7 +29,7 @@ module "tgw" {
   vpc_attachments = {
 	vpc = {
 	  vpc_id       = module.vpc.vpc_id
-	  subnet_ids   = module.vpc.private_subnets
+	  subnet_ids   = module.vpc.public_subnets
 	  dns_support  = true
 	  ipv6_support = false
 
@@ -47,6 +47,7 @@ module "tgw" {
 
   ram_allow_external_principals = true
   ram_principals = [307990089504]
+  #ram_principals = []
 
   tags = {
 	Project = "Azure-AWS"
