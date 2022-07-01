@@ -26,7 +26,7 @@ module "tgw" {
 
   enable_auto_accept_shared_attachments = true
   
-  amazon_side_asn = 64520
+  amazon_side_asn = 64512
 
   vpc_attachments = {
 	vpc = {
