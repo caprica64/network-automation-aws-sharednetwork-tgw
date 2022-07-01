@@ -25,6 +25,8 @@ module "tgw" {
   description = "TGW shared with several other AWS accounts"
 
   enable_auto_accept_shared_attachments = true
+  
+  amazon_side_asn = 64520
 
   vpc_attachments = {
 	vpc = {
@@ -46,7 +48,7 @@ module "tgw" {
   }
 
   ram_allow_external_principals = true
-  #ram_principals = [307990089504]
+  #ram_principals = [307990089504] << Kept as an example
   ram_principals = ["arn:aws:organizations::482419818288:organization/o-q8mhn3b3j0"]
 
   tags = {
