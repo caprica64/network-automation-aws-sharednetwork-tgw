@@ -70,6 +70,18 @@ module "vpc" {
   single_nat_gateway = false
   enable_vpn_gateway = false
 
+  customer_gateways = {
+	  IP1 = {
+		bgp_asn     = 65112
+		ip_address  = "1.2.3.4"
+		device_name = "some_name"
+	  },
+	  IP2 = {
+		bgp_asn    = 65112
+		ip_address = "5.6.7.8"
+	  }
+	}
+
   tags = {
 	Terraform = "true"
 	Environment = "dev"
