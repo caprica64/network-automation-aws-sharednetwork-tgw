@@ -46,8 +46,8 @@ module "tgw" {
   }
 
   ram_allow_external_principals = true
-  ram_principals = [307990089504]
-  #ram_principals = []
+  #ram_principals = [307990089504]
+  ram_principals = [o-q8mhn3b3j0]
 
   tags = {
 	Project = "Azure-AWS"
