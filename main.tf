@@ -248,6 +248,23 @@ resource "aws_security_group_rule" "all_out" {
   security_group_id  = aws_security_group.allow_testing_connectivity.id
 }
 
+################################################################################
+# Transit Gateway
+################################################################################
+resource "aws_ec2_transit_gateway" "hub" {
+  description = "Hub Transit Gateway"
+  
+  amazon_side_asn = 64512
+  auto_accept_shared_attachments = enable
+  dns_support = true 
+  
+  tags = {
+  	Role        = "Hub"
+  	Project     = "Azure-AWS"
+  	Environment = "Dev"
+  	ManagedBy   = "terraform"
+	}
+}
 
 ## Vars 
 ## vpc name
