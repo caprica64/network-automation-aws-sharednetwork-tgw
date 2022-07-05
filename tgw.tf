@@ -13,7 +13,7 @@ provider "aws" {
 }
 
 locals {
-  name   = "Shared-TGW"
+  name   = "Hub-TGW"
   region = "eu-west-1"
   #region = var.region
 }
