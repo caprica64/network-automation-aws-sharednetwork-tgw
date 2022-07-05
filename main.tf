@@ -258,12 +258,12 @@ resource "aws_ec2_transit_gateway" "hub" {
   # auto_accept_shared_attachments = enable
   # dns_support = enable
   # 
-  # tags = {
-  # 	Role        = "Hub"
-  # 	Project     = "Azure-AWS"
-  # 	Environment = "Dev"
-  # 	ManagedBy   = "terraform"
-  # }
+  tags = {
+  	Role        = "Hub"
+  	Project     = "Azure-AWS"
+  	Environment = "Dev"
+  	ManagedBy   = "terraform"
+  }
 }
 
 ## Vars 
