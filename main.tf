@@ -256,7 +256,7 @@ resource "aws_ec2_transit_gateway" "hub" {
   
   amazon_side_asn = 64512
   # auto_accept_shared_attachments = enable
-  dns_support = enable
+  # dns_support = enable
 
   tags = {
     Name        = "Hub-TGW"
