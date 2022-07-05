@@ -263,7 +263,7 @@ resource "aws_ec2_transit_gateway" "hub" {
   	Project     = "Azure-AWS"
   	Environment = "Dev"
   	ManagedBy   = "terraform"
-	}
+  }
 }
 
 ## Vars 
