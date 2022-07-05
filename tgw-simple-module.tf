@@ -36,6 +36,9 @@ module "tgw" {
 	  dns_support  = true
 	  ipv6_support = false
 
+	transit_gateway_default_route_table_association = false
+	transit_gateway_default_route_table_propagation = false
+
 	  tgw_routes = [
 		{
 		  destination_cidr_block = "30.0.0.0/16"
