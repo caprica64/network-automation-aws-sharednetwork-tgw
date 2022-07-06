@@ -296,8 +296,8 @@ resource "aws_ram_principal_association" "example" {
 ################################################################################
 # VPC Attachment section
 ################################################################################
-resource "aws_ec2_transit_gateway_vpc_attachment" "tgw_vpc_attach-subnets" {
-  subnet_ids         = [aws_subnet.PrivateSubnet1a.id, aws_subnet.PrivateSubnet1c.id, aws_subnet.PublicSubnet1a.id, aws_subnet.PublicSubnet1c.id]
+resource "aws_ec2_transit_gateway_vpc_attachment" "tgw_vpc_attach-public-subnets" {
+  subnet_ids         = [aws_subnet.PublicSubnet1a.id, aws_subnet.PublicSubnet1c.id]
   transit_gateway_id = aws_ec2_transit_gateway.hub.id
   vpc_id             = aws_vpc.VPC.id
 
