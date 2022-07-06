@@ -270,6 +270,13 @@ resource "aws_ec2_transit_gateway" "hub" {
   }
 }
 
+resource "aws_ram_resource_share" "hub" {
+  name = "terraform-example"
+
+  tags = {
+	Name = "terraform-example"
+  }
+}
 
 # Share the transit gateway...
 resource "aws_ram_resource_association" "hub-tgw" {
