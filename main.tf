@@ -296,21 +296,21 @@ resource "aws_ram_principal_association" "example" {
 ################################################################################
 # VPC Attachment section
 ################################################################################
-# resource "aws_ec2_transit_gateway_vpc_attachment" "tgw_vpc_attach-public-subnets" {
-#   subnet_ids         = [aws_subnet.PublicSubnet1a.id, aws_subnet.PublicSubnet1c.id]
-#   transit_gateway_id = aws_ec2_transit_gateway.hub.id
-#   vpc_id             = aws_vpc.VPC.id
-# 
-#   appliance_mode_support = "disable"
-#   dns_support = "enable"
-#   #ipv6_support = "enable"
-#   transit_gateway_default_route_table_association = true
-#   transit_gateway_default_route_table_propagation = true
-# 
-#   tags = {
-# 	Name = "Private-subnet-attachment"
-#   }
-# }
+resource "aws_ec2_transit_gateway_vpc_attachment" "tgw_vpc_attach-public-subnets" {
+  subnet_ids         = [aws_subnet.PublicSubnet1a.id, aws_subnet.PublicSubnet1c.id]
+  transit_gateway_id = aws_ec2_transit_gateway.hub.id
+  vpc_id             = aws_vpc.VPC.id
+
+  appliance_mode_support = "disable"
+  dns_support = "enable"
+  #ipv6_support = "enable"
+  transit_gateway_default_route_table_association = true
+  transit_gateway_default_route_table_propagation = true
+
+  tags = {
+	Name = "Public-subnet-attachment"
+  }
+}
 
 ################################################################################
 # Transit Gateway routing table
