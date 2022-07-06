@@ -104,19 +104,19 @@ resource "aws_route_table" "RouteTablePublic" {
 	cidr_block = "0.0.0.0/0"
 	gateway_id = aws_internet_gateway.Igw.id
   }
-
-  route {
-	  cidr_block = "10.1.0.0/16"
-	  transit_gateway_id = aws_ec2_transit_gateway.hub.id
-	}
+# 
+#   route {
+# 	  cidr_block = "10.1.0.0/16"
+# 	  transit_gateway_id = aws_ec2_transit_gateway.hub.id
+#   }
 }
 
-resource "aws_route_table_association" "AssociationForRouteTablePublic0" {
+resource "aws_route_table_association" "AssociationForRouteTablePublic1a" {
   subnet_id = aws_subnet.PublicSubnet1a.id
   route_table_id = aws_route_table.RouteTablePublic.id
 }
 
-resource "aws_route_table_association" "AssociationForRouteTablePublic2" {
+resource "aws_route_table_association" "AssociationForRouteTablePubli1c" {
   subnet_id = aws_subnet.PublicSubnet1c.id
   route_table_id = aws_route_table.RouteTablePublic.id
 }
@@ -210,8 +210,7 @@ resource "aws_ec2_transit_gateway" "hub" {
   vpn_ecmp_support = "enable"
   
   tags = {
-    Name        = "Hub-TGW"
-  	Role        = "Hub"
+    Name        = "Central-TGW"
   	Project     = "Azure-AWS"
   	Environment = "Dev"
   	ManagedBy   = "terraform"
@@ -222,10 +221,10 @@ resource "aws_ec2_transit_gateway" "hub" {
 # Resource sharing
 ################################################################################
 resource "aws_ram_resource_share" "hub" {
-  name = "hub-tgw"
+  name = "central-tgw"
 
   tags = {
-	Name = "terraform-example"
+	Name = "Central-TGW-share"
   }
 }
 #
@@ -244,37 +243,37 @@ resource "aws_ram_principal_association" "example" {
 ################################################################################
 # VPC Attachment section
 ################################################################################
-resource "aws_ec2_transit_gateway_vpc_attachment" "tgw_vpc_attach-public-subnets" {
-  subnet_ids         = [aws_subnet.PublicSubnet1a.id, aws_subnet.PublicSubnet1c.id]
-  transit_gateway_id = aws_ec2_transit_gateway.hub.id
-  vpc_id             = aws_vpc.VPC.id
-  #transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.hub
-
-  appliance_mode_support = "disable"
-  dns_support = "enable"
-  #ipv6_support = "enable"
-  transit_gateway_default_route_table_association = true
-  transit_gateway_default_route_table_propagation = true
-
-  tags = {
-	Name = "Public-subnet-attachment"
-  }
-}
+# resource "aws_ec2_transit_gateway_vpc_attachment" "tgw_vpc_attach-public-subnets" {
+#   subnet_ids         = [aws_subnet.PublicSubnet1a.id, aws_subnet.PublicSubnet1c.id]
+#   transit_gateway_id = aws_ec2_transit_gateway.hub.id
+#   vpc_id             = aws_vpc.VPC.id
+#   #transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.hub
+# 
+#   appliance_mode_support = "disable"
+#   dns_support = "enable"
+#   #ipv6_support = "enable"
+#   transit_gateway_default_route_table_association = true
+#   transit_gateway_default_route_table_propagation = true
+# 
+#   tags = {
+# 	Name = "Public-subnet-attachment"
+#   }
+# }
 
 ################################################################################
 # Transit Gateway routing table
 ################################################################################
-resource "aws_ec2_transit_gateway_route_table" "hub" {
-  transit_gateway_id = aws_ec2_transit_gateway.hub.id
-  
-  tags = {
-	  Name        = "Hub-TGW-Route-Table-Spoke1"
-		Role        = "Hub"
-		Project     = "Azure-AWS"
-		Environment = "Dev"
-		ManagedBy   = "terraform"
-	}
-}
+# resource "aws_ec2_transit_gateway_route_table" "hub" {
+#   transit_gateway_id = aws_ec2_transit_gateway.hub.id
+#   
+#   tags = {
+# 	  Name        = "Hub-TGW-Route-Table-Spoke1"
+# 		Role        = "Hub"
+# 		Project     = "Azure-AWS"
+# 		Environment = "Dev"
+# 		ManagedBy   = "terraform"
+# 	}
+# }
 
 ################################################################################
 # Security Groups
