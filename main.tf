@@ -272,6 +272,14 @@ resource "aws_ec2_transit_gateway" "hub" {
 
 resource "aws_ec2_transit_gateway_route_table" "spoke1" {
   transit_gateway_id = aws_ec2_transit_gateway.hub.id
+  
+  tags = {
+	  Name        = "Hub-TGW-Route-Table"
+		Role        = "Hub"
+		Project     = "Azure-AWS"
+		Environment = "Dev"
+		ManagedBy   = "terraform"
+	}
 }
 
 ## Vars 
