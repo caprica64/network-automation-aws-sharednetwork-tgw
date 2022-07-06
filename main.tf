@@ -274,7 +274,7 @@ resource "aws_ec2_transit_gateway_route_table" "spoke1" {
   transit_gateway_id = aws_ec2_transit_gateway.hub.id
   
   tags = {
-	  Name        = "Hub-TGW-Route-Table"
+	  Name        = "Hub-TGW-Route-Table-Spoke1"
 		Role        = "Hub"
 		Project     = "Azure-AWS"
 		Environment = "Dev"
