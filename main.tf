@@ -196,63 +196,6 @@ resource "aws_nat_gateway" "NatGw1c" {
   }
 }
 
-
-
-
-
-
-
-################################################################################
-# Security Groups
-################################################################################
-#
-## Connectivity
-#
-resource "aws_security_group" "allow_testing_connectivity" {
-  name        = "Allow_ec2_tests"
-  description = "Allow EC2 instances to test connectivity"
-  vpc_id      = aws_vpc.VPC.id
-  
-  tags = {
-	  Name        = "Test-SG"
-	  Role        = "public"
-	  Project     = "Azure-AWS"
-	  Environment = "Dev"
-	  ManagedBy   = "terraform"
-	}
-}
-
-resource "aws_security_group_rule" "ssh_in" {
-  type               = "ingress"
-  from_port          = 22
-  to_port            = 22
-  protocol           = "tcp"
-  cidr_blocks        = ["0.0.0.0/0"]
-  security_group_id  = aws_security_group.allow_testing_connectivity.id
-  #name               = "SSH inbound"
-  description        = "Allow inbound SSH access the EC2 instances"
-}
-
-resource "aws_security_group_rule" "icmp_in" {
-  type               = "ingress"
-  from_port          = 0
-  to_port            = 0
-  protocol           = "1"
-  cidr_blocks        = ["0.0.0.0/0"]
-  security_group_id  = aws_security_group.allow_testing_connectivity.id
-  #name               = "ICMP inbound"
-  description        = "Allow inbound ICMP to the EC2 instances"
-}
-
-resource "aws_security_group_rule" "all_out" {
-  type               = "egress"
-  from_port          = 0
-  to_port            = 0
-  protocol           = "-1"
-  cidr_blocks        = ["0.0.0.0/0"]
-  security_group_id  = aws_security_group.allow_testing_connectivity.id
-}
-
 ################################################################################
 # Transit Gateway
 ################################################################################
@@ -305,6 +248,7 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "tgw_vpc_attach-public-subnets
   subnet_ids         = [aws_subnet.PublicSubnet1a.id, aws_subnet.PublicSubnet1c.id]
   transit_gateway_id = aws_ec2_transit_gateway.hub.id
   vpc_id             = aws_vpc.VPC.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.hub
 
   appliance_mode_support = "disable"
   dns_support = "enable"
@@ -320,7 +264,7 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "tgw_vpc_attach-public-subnets
 ################################################################################
 # Transit Gateway routing table
 ################################################################################
-resource "aws_ec2_transit_gateway_route_table" "spoke1" {
+resource "aws_ec2_transit_gateway_route_table" "hub" {
   transit_gateway_id = aws_ec2_transit_gateway.hub.id
   
   tags = {
@@ -331,6 +275,58 @@ resource "aws_ec2_transit_gateway_route_table" "spoke1" {
 		ManagedBy   = "terraform"
 	}
 }
+
+################################################################################
+# Security Groups
+################################################################################
+#
+## Connectivity
+#
+resource "aws_security_group" "allow_testing_connectivity" {
+  name        = "Allow_ec2_tests"
+  description = "Allow EC2 instances to test connectivity"
+  vpc_id      = aws_vpc.VPC.id
+  
+  tags = {
+	  Name        = "Test-SG"
+	  Role        = "public"
+	  Project     = "Azure-AWS"
+	  Environment = "Dev"
+	  ManagedBy   = "terraform"
+	}
+}
+
+resource "aws_security_group_rule" "ssh_in" {
+  type               = "ingress"
+  from_port          = 22
+  to_port            = 22
+  protocol           = "tcp"
+  cidr_blocks        = ["0.0.0.0/0"]
+  security_group_id  = aws_security_group.allow_testing_connectivity.id
+  #name               = "SSH inbound"
+  description        = "Allow inbound SSH access the EC2 instances"
+}
+
+resource "aws_security_group_rule" "icmp_in" {
+  type               = "ingress"
+  from_port          = 0
+  to_port            = 0
+  protocol           = "1"
+  cidr_blocks        = ["0.0.0.0/0"]
+  security_group_id  = aws_security_group.allow_testing_connectivity.id
+  #name               = "ICMP inbound"
+  description        = "Allow inbound ICMP to the EC2 instances"
+}
+
+resource "aws_security_group_rule" "all_out" {
+  type               = "egress"
+  from_port          = 0
+  to_port            = 0
+  protocol           = "-1"
+  cidr_blocks        = ["0.0.0.0/0"]
+  security_group_id  = aws_security_group.allow_testing_connectivity.id
+}
+
 
 ## Vars 
 ## vpc name
