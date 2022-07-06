@@ -262,17 +262,17 @@ resource "aws_ram_principal_association" "example" {
 ################################################################################
 # Transit Gateway routing table
 ################################################################################
-# resource "aws_ec2_transit_gateway_route_table" "hub" {
-#   transit_gateway_id = aws_ec2_transit_gateway.hub.id
-#   
-#   tags = {
-# 	  Name        = "Hub-TGW-Route-Table-Spoke1"
-# 		Role        = "Hub"
-# 		Project     = "Azure-AWS"
-# 		Environment = "Dev"
-# 		ManagedBy   = "terraform"
-# 	}
-# }
+resource "aws_ec2_transit_gateway_route_table" "hub" {
+  transit_gateway_id = aws_ec2_transit_gateway.hub.id
+  
+  tags = {
+	  Name        = "Hub-TGW-Route-Table-Spoke1"
+		Role        = "Hub"
+		Project     = "Azure-AWS"
+		Environment = "Dev"
+		ManagedBy   = "terraform"
+	}
+}
 
 
 ################################################################################
