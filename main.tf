@@ -270,6 +270,9 @@ resource "aws_ec2_transit_gateway" "hub" {
   }
 }
 
+################################################################################
+# Resource sharing
+################################################################################
 resource "aws_ram_resource_share" "hub" {
   name = "hub-tgw"
 
@@ -277,20 +280,23 @@ resource "aws_ram_resource_share" "hub" {
 	Name = "terraform-example"
   }
 }
-
-# Share the transit gateway...
+#
+## Transit Gateway sharing to the Organization
+#
 resource "aws_ram_resource_association" "hub-tgw" {
   resource_arn       = aws_ec2_transit_gateway.hub.arn
   resource_share_arn = aws_ram_resource_share.hub.id
 }
 
-# ...with the second account.
 resource "aws_ram_principal_association" "example" {
   principal          = "arn:aws:organizations::482419818288:organization/o-q8mhn3b3j0"
   resource_share_arn = aws_ram_resource_share.hub.id
 }
 
 
+################################################################################
+# Transit Gateway routing table
+################################################################################
 resource "aws_ec2_transit_gateway_route_table" "spoke1" {
   transit_gateway_id = aws_ec2_transit_gateway.hub.id
   
