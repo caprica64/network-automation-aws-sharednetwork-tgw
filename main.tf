@@ -265,26 +265,18 @@ resource "aws_ram_principal_association" "main-org" {
 ################################################################################
 # Transit Gateway routing table
 ################################################################################
-# resource "aws_ec2_transit_gateway_route_table" "hub" {
-#   transit_gateway_id = aws_ec2_transit_gateway.hub.id
-#   
-#   tags = {
-# 	  Name        = "Central-TGW-Route-Table-Spoke1"
-# 		Project     = "Azure-AWS"
-# 		Environment = "Dev"
-# 		ManagedBy   = "terraform"
-# 	}
-# }
+resource "aws_ec2_transit_gateway_route_table" "association_default_route_table" {
+  transit_gateway_id = aws_ec2_transit_gateway.tgw.id
+  
+  tags = {
+	  Name        = "Central-TGW-Route-Table"
+		Project     = "Azure-AWS"
+		Environment = "Dev"
+		ManagedBy   = "terraform"
+	}
+}
 
-#Routetable, enable private subnet route destination to TGW
-# resource "aws_route" "r_tgw" {
-#   for_each = toset(data.aws_route_tables.private.ids)
-# 
-#   route_table_id            = each.key
-#   destination_cidr_block    = var.tgw_destination_cidr_block
-#   transit_gateway_id        = aws_ec2_transit_gateway.tgw.id
-#   depends_on                = [aws_ec2_transit_gateway_vpc_attachment.tgw_vpc_attach]
-# }
+
 
 
 ################################################################################
