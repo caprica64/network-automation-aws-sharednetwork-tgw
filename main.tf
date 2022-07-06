@@ -106,11 +106,11 @@ resource "aws_route_table" "RouteTablePublic" {
 	cidr_block = "0.0.0.0/0"
 	gateway_id = aws_internet_gateway.Igw.id
   }
-# 
-#   route {
-# 	  cidr_block = "10.1.0.0/16"
-# 	  transit_gateway_id = aws_ec2_transit_gateway.hub.id
-#   }
+
+  route {
+	  cidr_block = "10.1.0.0/16"
+	  transit_gateway_id = aws_ec2_transit_gateway.hub.id
+  }
 }
 
 resource "aws_route_table_association" "AssociationForRouteTablePublic1a" {
