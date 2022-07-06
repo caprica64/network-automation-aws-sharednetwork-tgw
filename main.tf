@@ -270,6 +270,20 @@ resource "aws_ec2_transit_gateway" "hub" {
   }
 }
 
+
+# Share the transit gateway...
+resource "aws_ram_resource_association" "hub-tgw" {
+  resource_arn       = aws_ec2_transit_gateway.hub.arn
+  resource_share_arn = aws_ram_resource_share.hub.id
+}
+
+# ...with the second account.
+resource "aws_ram_principal_association" "example" {
+  principal          = "arn:aws:organizations::482419818288:organization/o-q8mhn3b3j0"
+  resource_share_arn = aws_ram_resource_share.hub.id
+}
+
+
 resource "aws_ec2_transit_gateway_route_table" "spoke1" {
   transit_gateway_id = aws_ec2_transit_gateway.hub.id
   
