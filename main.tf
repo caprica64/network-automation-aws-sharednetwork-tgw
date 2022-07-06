@@ -208,7 +208,7 @@ resource "aws_ec2_transit_gateway" "tgw" {
   auto_accept_shared_attachments = "enable"
   dns_support = "enable"
   default_route_table_association = "enable"
-  default_route_table_propagation = "disable"
+  default_route_table_propagation = "enable"
   vpn_ecmp_support = "enable"
   
   tags = {
