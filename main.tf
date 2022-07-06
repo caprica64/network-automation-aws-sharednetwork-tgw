@@ -259,7 +259,8 @@ resource "aws_ec2_transit_gateway" "hub" {
   dns_support = "enable"
   default_route_table_association = "disable"
   default_route_table_propagation = "disable"
-
+  vpn_ecmp_support = "enable"
+  
   tags = {
     Name        = "Hub-TGW"
   	Role        = "Hub"
