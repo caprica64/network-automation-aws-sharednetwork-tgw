@@ -16,6 +16,8 @@ data "aws_availability_zones" "available" {
   state = "available"
 }
 
+data "aws_organizations_organization" "org" {}
+
 locals {
   name   = "Hub"
   region = "eu-west-1"
@@ -199,7 +201,7 @@ resource "aws_nat_gateway" "NatGw1c" {
 ################################################################################
 # Transit Gateway
 ################################################################################
-resource "aws_ec2_transit_gateway" "hub" {
+resource "aws_ec2_transit_gateway" "tgw" {
   description = "Hub Transit Gateway"
   
   amazon_side_asn = 64512
@@ -220,7 +222,7 @@ resource "aws_ec2_transit_gateway" "hub" {
 ################################################################################
 # Resource sharing
 ################################################################################
-resource "aws_ram_resource_share" "hub" {
+resource "aws_ram_resource_share" "shared-tgw" {
   name = "central-tgw"
 
   tags = {
@@ -231,13 +233,14 @@ resource "aws_ram_resource_share" "hub" {
 ## Transit Gateway sharing to the Organization
 #
 resource "aws_ram_resource_association" "hub-tgw" {
-  resource_arn       = aws_ec2_transit_gateway.hub.arn
-  resource_share_arn = aws_ram_resource_share.hub.id
+  resource_arn       = aws_ec2_transit_gateway.tgw.arn
+  resource_share_arn = aws_ram_resource_share.tgw.id
 }
 
-resource "aws_ram_principal_association" "example" {
-  principal          = "arn:aws:organizations::482419818288:organization/o-q8mhn3b3j0"
-  resource_share_arn = aws_ram_resource_share.hub.id
+resource "aws_ram_principal_association" "main-org" {
+  #principal          = "arn:aws:organizations::482419818288:organization/o-q8mhn3b3j0"
+  principal          = data.aws_organizations_organization.org.arn
+  resource_share_arn = aws_ram_resource_share.tgw.id
 }
 
 ################################################################################
