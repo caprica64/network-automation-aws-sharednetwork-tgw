@@ -106,7 +106,7 @@ resource "aws_route_table" "RouteTablePublic" {
   }
 
   route {
-	  cidr_block = "10.1.0.0/6"
+	  cidr_block = "10.1.0.0/16"
 	  transit_gateway_id = aws_ec2_transit_gateway.hub.id
 	}
 }
