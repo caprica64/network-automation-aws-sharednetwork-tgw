@@ -248,7 +248,7 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "tgw_vpc_attach-public-subnets
   subnet_ids         = [aws_subnet.PublicSubnet1a.id, aws_subnet.PublicSubnet1c.id]
   transit_gateway_id = aws_ec2_transit_gateway.hub.id
   vpc_id             = aws_vpc.VPC.id
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.hub
+  #transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.hub
 
   appliance_mode_support = "disable"
   dns_support = "enable"
