@@ -1,3 +1,6 @@
+#Region
+region = "eu-west-1"
+
 #VPC variables
 vpc_name = "transit"
 cidr_block = "10.0.0.0/16"

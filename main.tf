@@ -20,8 +20,7 @@ data "aws_organizations_organization" "org" {}
 
 locals {
   name   = "Hub"
-  region = "eu-west-1"
-  #region = var.region
+  region = var.region
 }
 
 ################################################################################
