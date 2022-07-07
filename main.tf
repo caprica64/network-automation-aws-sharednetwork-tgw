@@ -20,8 +20,8 @@ data "aws_organizations_organization" "org" {}
 
 locals {
   name   = "Hub"
-  #region = "eu-west-1"
-  region = var.region
+  region = "eu-west-1"
+  #region = var.region
 }
 
 ################################################################################
@@ -91,9 +91,8 @@ resource "aws_subnet" "PrivateSubnet1c" {
   }
 }
 #
-## Route tables
+## Route tables - Public
 #
-### Public
 resource "aws_route_table" "RouteTablePublic" {
   vpc_id = aws_vpc.transit.id
   depends_on = [ aws_internet_gateway.Igw ]
@@ -102,17 +101,22 @@ resource "aws_route_table" "RouteTablePublic" {
 	Name = "Public Route Table"
   }
 
+  # Internet
   route {
 	cidr_block = "0.0.0.0/0"
 	gateway_id = aws_internet_gateway.Igw.id
   }
 
+  # Spoke 1
   route {
 	cidr_block = "10.1.0.0/16"
 	transit_gateway_id = aws_ec2_transit_gateway.tgw.id
   }
 }
 
+#
+## Route tables associations - Public
+#
 resource "aws_route_table_association" "AssociationForRouteTablePublic1a" {
   subnet_id = aws_subnet.PublicSubnet1a.id
   route_table_id = aws_route_table.RouteTablePublic.id
@@ -123,7 +127,9 @@ resource "aws_route_table_association" "AssociationForRouteTablePubli1c" {
   route_table_id = aws_route_table.RouteTablePublic.id
 }
 
-### Private for 1a and 1c AZ
+#
+## Route tables - Private
+#
 resource "aws_route_table" "RouteTablePrivate1a" {
   vpc_id = aws_vpc.transit.id
   depends_on = [ aws_nat_gateway.NatGw1a ]
@@ -132,43 +138,49 @@ resource "aws_route_table" "RouteTablePrivate1a" {
 	Name = "Private Route Table 1a"
   }
 
+  # Internet
   route {
 	cidr_block = "0.0.0.0/0"
 	nat_gateway_id = aws_nat_gateway.NatGw1a.id
   }
   
+  # Spoke 1
   route {
   cidr_block = "10.1.0.0/16"
   transit_gateway_id = aws_ec2_transit_gateway.tgw.id
   }
 }
-
-resource "aws_route_table_association" "AssociationForRouteTablePrivate1a0" {
-  subnet_id = aws_subnet.PrivateSubnet1a.id
-  route_table_id = aws_route_table.RouteTablePrivate1a.id
-}
-
 
 resource "aws_route_table" "RouteTablePrivate1c" {
   vpc_id = aws_vpc.transit.id
   depends_on = [ aws_nat_gateway.NatGw1c ]
 
   tags = {
-	Name = "Private Route Table 1c"
+  Name = "Private Route Table 1c"
   }
 
+  # Internet
   route {
-	cidr_block = "0.0.0.0/0"
-	nat_gateway_id = aws_nat_gateway.NatGw1c.id
+  cidr_block = "0.0.0.0/0"
+  nat_gateway_id = aws_nat_gateway.NatGw1c.id
   }
   
+  # Spoke 1
   route {
   cidr_block = "10.1.0.0/16"
   transit_gateway_id = aws_ec2_transit_gateway.tgw.id
   }
 }
 
-resource "aws_route_table_association" "AssociationForRouteTablePrivate1c0" {
+#
+## Route tables associations - Private
+#
+resource "aws_route_table_association" "AssociationForRouteTablePrivate1a" {
+  subnet_id = aws_subnet.PrivateSubnet1a.id
+  route_table_id = aws_route_table.RouteTablePrivate1a.id
+}
+
+resource "aws_route_table_association" "AssociationForRouteTablePrivate1c" {
   subnet_id = aws_subnet.PrivateSubnet1c.id
   route_table_id = aws_route_table.RouteTablePrivate1c.id
 }
@@ -193,6 +205,7 @@ resource "aws_nat_gateway" "NatGw1a" {
 	Name = "NAT GW 1a"
   }
 }
+
 #
 ## Elastic IP and NAT Gateway for 1c
 #
@@ -239,6 +252,7 @@ resource "aws_ram_resource_share" "tgw" {
 	Name = "Central-TGW-share"
   }
 }
+
 #
 ## Transit Gateway sharing to the Organization
 #
