@@ -136,6 +136,11 @@ resource "aws_route_table" "RouteTablePrivate1a" {
 	cidr_block = "0.0.0.0/0"
 	nat_gateway_id = aws_nat_gateway.NatGw1a.id
   }
+  
+  route {
+  cidr_block = "10.1.0.0/16"
+  transit_gateway_id = aws_ec2_transit_gateway.tgw.id
+  }
 }
 
 resource "aws_route_table_association" "AssociationForRouteTablePrivate1a0" {
@@ -155,6 +160,11 @@ resource "aws_route_table" "RouteTablePrivate1c" {
   route {
 	cidr_block = "0.0.0.0/0"
 	nat_gateway_id = aws_nat_gateway.NatGw1c.id
+  }
+  
+  route {
+  cidr_block = "10.1.0.0/16"
+  transit_gateway_id = aws_ec2_transit_gateway.tgw.id
   }
 }
 
