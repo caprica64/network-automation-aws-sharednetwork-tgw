@@ -260,7 +260,7 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "tgw_vpc_attach-public-subnets
   #subnet_ids         = [aws_subnet.PublicSubnet1a.id, aws_subnet.PublicSubnet1c.id]
   subnet_ids         = [aws_subnet.PrivateSubnet1a.id, aws_subnet.PrivateSubnet1c.id]
   transit_gateway_id = aws_ec2_transit_gateway.tgw.id
-  vpc_id             = aws_vpc.VPC.id
+  vpc_id             = aws_vpc.transit.id
   
   appliance_mode_support = "disable"
   dns_support = "enable"
@@ -305,7 +305,7 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "tgw_vpc_attach-public-subnets
 resource "aws_security_group" "allow_testing_connectivity" {
   name        = "Allow_ec2_tests"
   description = "Allow EC2 instances to test connectivity"
-  vpc_id      = aws_vpc.VPC.id
+  vpc_id      = aws_vpc.transit.id
   
   tags = {
 	  Name        = "Test-SG"
