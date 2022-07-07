@@ -1,16 +1,16 @@
-terraform {
-  required_providers {
-	  aws = {
-	    source = "hashicorp/aws"
-	    version = "4.20.1"
-	  }
-  }
-}
-
-provider "aws" {
-  # Configuration options
-  region = "eu-west-1"
-}
+# terraform {
+#   required_providers {
+# 	  aws = {
+# 	    source = "hashicorp/aws"
+# 	    version = "4.20.1"
+# 	  }
+#   }
+# }
+# 
+# provider "aws" {
+#   # Configuration options
+#   region = "eu-west-1"
+# }
 
 data "aws_availability_zones" "available" {
   state = "available"
