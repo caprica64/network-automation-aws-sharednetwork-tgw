@@ -70,7 +70,7 @@ resource "aws_subnet" "PublicSubnet1c" {
 }
 
 resource "aws_subnet" "PrivateSubnet1a" {
-  cidr_block = "10.0.10.0/24"
+  cidr_block = var.private_subnet_1a_cidr
   map_public_ip_on_launch = false
   vpc_id = aws_vpc.transit.id
   availability_zone = data.aws_availability_zones.available.names[0]
@@ -81,7 +81,7 @@ resource "aws_subnet" "PrivateSubnet1a" {
 }
 
 resource "aws_subnet" "PrivateSubnet1c" {
-  cidr_block = "10.0.11.0/24"
+  cidr_block = var.private_subnet_1c_cidr
   map_public_ip_on_launch = false
   vpc_id = aws_vpc.transit.id
   availability_zone = data.aws_availability_zones.available.names[2]
