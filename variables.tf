@@ -1,2 +1,2 @@
 variable "vpc_id" {}
-variable "region" {}
+variable "cidr_block" {}
