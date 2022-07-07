@@ -109,7 +109,7 @@ resource "aws_route_table" "RouteTablePublic" {
 
   # Spoke 1
   route {
-	cidr_block = "10.1.0.0/16"
+	cidr_block = var.spoke1_cidr
 	transit_gateway_id = aws_ec2_transit_gateway.tgw.id
   }
 }
@@ -146,7 +146,7 @@ resource "aws_route_table" "RouteTablePrivate1a" {
   
   # Spoke 1
   route {
-  cidr_block = "10.1.0.0/16"
+  cidr_block = var.spoke1_cidr
   transit_gateway_id = aws_ec2_transit_gateway.tgw.id
   }
 }
@@ -167,7 +167,7 @@ resource "aws_route_table" "RouteTablePrivate1c" {
   
   # Spoke 1
   route {
-  cidr_block = "10.1.0.0/16"
+  cidr_block = var.spoke1_cidr
   transit_gateway_id = aws_ec2_transit_gateway.tgw.id
   }
 }
