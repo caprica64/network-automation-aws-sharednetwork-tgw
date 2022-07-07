@@ -31,7 +31,7 @@ locals {
 #
 ## Main VPC
 #
-resource "aws_vpc" "VPC" {
+resource "aws_vpc" "transit" {
   cidr_block            = "10.0.0.0/16"
   instance_tenancy      = "default"
   
@@ -50,7 +50,7 @@ resource "aws_vpc" "VPC" {
 resource "aws_subnet" "PublicSubnet1a" {
   cidr_block = "10.0.0.0/24"
   map_public_ip_on_launch = false
-  vpc_id = aws_vpc.VPC.id
+  vpc_id = aws_vpc.transit.id
   availability_zone = data.aws_availability_zones.available.names[0]
 
   tags = {
@@ -61,7 +61,7 @@ resource "aws_subnet" "PublicSubnet1a" {
 resource "aws_subnet" "PublicSubnet1c" {
   cidr_block = "10.0.1.0/24"
   map_public_ip_on_launch = false
-  vpc_id = aws_vpc.VPC.id
+  vpc_id = aws_vpc.transit.id
   availability_zone = data.aws_availability_zones.available.names[2]
 
   tags = {
@@ -72,7 +72,7 @@ resource "aws_subnet" "PublicSubnet1c" {
 resource "aws_subnet" "PrivateSubnet1a" {
   cidr_block = "10.0.10.0/24"
   map_public_ip_on_launch = false
-  vpc_id = aws_vpc.VPC.id
+  vpc_id = aws_vpc.transit.id
   availability_zone = data.aws_availability_zones.available.names[0]
 
   tags = {
@@ -83,7 +83,7 @@ resource "aws_subnet" "PrivateSubnet1a" {
 resource "aws_subnet" "PrivateSubnet1c" {
   cidr_block = "10.0.11.0/24"
   map_public_ip_on_launch = false
-  vpc_id = aws_vpc.VPC.id
+  vpc_id = aws_vpc.transit.id
   availability_zone = data.aws_availability_zones.available.names[2]
 
   tags = {
@@ -95,7 +95,7 @@ resource "aws_subnet" "PrivateSubnet1c" {
 #
 ### Public
 resource "aws_route_table" "RouteTablePublic" {
-  vpc_id = aws_vpc.VPC.id
+  vpc_id = aws_vpc.transit.id
   depends_on = [ aws_internet_gateway.Igw ]
 
   tags = {
@@ -125,7 +125,7 @@ resource "aws_route_table_association" "AssociationForRouteTablePubli1c" {
 
 ### Private for 1a and 1c AZ
 resource "aws_route_table" "RouteTablePrivate1a" {
-  vpc_id = aws_vpc.VPC.id
+  vpc_id = aws_vpc.transit.id
   depends_on = [ aws_nat_gateway.NatGw1a ]
 
   tags = {
@@ -145,7 +145,7 @@ resource "aws_route_table_association" "AssociationForRouteTablePrivate1a0" {
 
 
 resource "aws_route_table" "RouteTablePrivate1c" {
-  vpc_id = aws_vpc.VPC.id
+  vpc_id = aws_vpc.transit.id
   depends_on = [ aws_nat_gateway.NatGw1c ]
 
   tags = {
@@ -167,7 +167,7 @@ resource "aws_route_table_association" "AssociationForRouteTablePrivate1c0" {
 ## Internet Gateway
 #
 resource "aws_internet_gateway" "Igw" {
-  vpc_id = aws_vpc.VPC.id
+  vpc_id = aws_vpc.transit.id
 }
 #
 ## Elastic IP and NAT Gateway for 1a
