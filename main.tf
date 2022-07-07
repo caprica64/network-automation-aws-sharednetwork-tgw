@@ -20,8 +20,8 @@ data "aws_organizations_organization" "org" {}
 
 locals {
   name   = "Hub"
-  region = "eu-west-1"
-  #region = var.region
+  #region = "eu-west-1"
+  region = var.region
 }
 
 ################################################################################
@@ -292,7 +292,6 @@ resource "aws_ec2_transit_gateway_route" "Internet" {
   destination_cidr_block         = "0.0.0.0/0"
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.tgw_vpc_attach-public-subnets.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway.tgw.association_default_route_table_id
-  #aws_ec2_transit_gateway.association_default_route_table.id
 }
 
 
