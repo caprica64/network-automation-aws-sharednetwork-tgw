@@ -39,7 +39,7 @@ resource "aws_vpc" "transit" {
   enable_dns_hostnames  = true
 
   tags = {
-	Name                = "Hub-VPC"
+	Name                = var.vpc_name
 	Project             = "Azure-AWS"
   }
 }
