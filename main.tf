@@ -267,8 +267,8 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "tgw_vpc_attach-public-subnets
 ################################################################################
 resource "aws_ec2_transit_gateway_route_table" "association_default_route_table" {
   transit_gateway_id             = aws_ec2_transit_gateway.tgw.id
-  transit_gateway_route_table_id = aws_subnet.RouteTablePrivate1a.id
-  destination_cidr_block         = "0.0.0.0/0"
+  #transit_gateway_route_table_id = aws_subnet.RouteTablePrivate1a.id
+  #destination_cidr_block         = "0.0.0.0/0"
   
   tags = {
 	  Name        = "Central-TGW-Route-Table"
@@ -278,7 +278,11 @@ resource "aws_ec2_transit_gateway_route_table" "association_default_route_table"
 	}
 }
 
-
+resource "aws_ec2_transit_gateway_route" "Internet" {
+  destination_cidr_block         = "0.0.0.0/0"
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.example.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway.example.association_default_route_table_id
+}
 
 
 ################################################################################
