@@ -1,16 +1,4 @@
-# terraform {
-#   required_providers {
-# 	  aws = {
-# 	    source = "hashicorp/aws"
-# 	    version = "4.20.1"
-# 	  }
-#   }
-# }
-# 
-# provider "aws" {
-#   # Configuration options
-#   region = "eu-west-1"
-# }
+### Transit infrastructure
 
 data "aws_availability_zones" "available" {
   state = "available"
@@ -305,56 +293,4 @@ resource "aws_ec2_transit_gateway_route" "Internet" {
   destination_cidr_block         = "0.0.0.0/0"
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.tgw_vpc_attach-public-subnets.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway.tgw.association_default_route_table_id
-}
-
-
-################################################################################
-# Security Groups
-################################################################################
-#
-## Connectivity
-#
-resource "aws_security_group" "allow_testing_connectivity" {
-  name        = "Allow_ec2_tests"
-  description = "Allow EC2 instances to test connectivity"
-  vpc_id      = aws_vpc.transit.id
-  
-  tags = {
-	  Name        = "Test-SG"
-	  Role        = "public"
-	  Project     = "Azure-AWS"
-	  Environment = "Dev"
-	  ManagedBy   = "terraform"
-	}
-}
-
-resource "aws_security_group_rule" "ssh_in" {
-  type               = "ingress"
-  from_port          = 22
-  to_port            = 22
-  protocol           = "tcp"
-  cidr_blocks        = ["0.0.0.0/0"]
-  security_group_id  = aws_security_group.allow_testing_connectivity.id
-  #name               = "SSH inbound"
-  description        = "Allow inbound SSH access the EC2 instances"
-}
-
-resource "aws_security_group_rule" "icmp_in" {
-  type               = "ingress"
-  from_port          = 0
-  to_port            = 0
-  protocol           = "1"
-  cidr_blocks        = ["0.0.0.0/0"]
-  security_group_id  = aws_security_group.allow_testing_connectivity.id
-  #name               = "ICMP inbound"
-  description        = "Allow inbound ICMP to the EC2 instances"
-}
-
-resource "aws_security_group_rule" "all_out" {
-  type               = "egress"
-  from_port          = 0
-  to_port            = 0
-  protocol           = "-1"
-  cidr_blocks        = ["0.0.0.0/0"]
-  security_group_id  = aws_security_group.allow_testing_connectivity.id
 }
