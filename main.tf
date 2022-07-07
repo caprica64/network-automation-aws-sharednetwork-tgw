@@ -48,7 +48,7 @@ resource "aws_vpc" "transit" {
 ## Subnets
 #
 resource "aws_subnet" "PublicSubnet1a" {
-  cidr_block = "10.0.0.0/24"
+  cidr_block = private_subnet_1a_cidr
   map_public_ip_on_launch = false
   vpc_id = aws_vpc.transit.id
   availability_zone = data.aws_availability_zones.available.names[0]
@@ -59,7 +59,7 @@ resource "aws_subnet" "PublicSubnet1a" {
 }
 
 resource "aws_subnet" "PublicSubnet1c" {
-  cidr_block = "10.0.1.0/24"
+  cidr_block = private_subnet_1c_cidr
   map_public_ip_on_launch = false
   vpc_id = aws_vpc.transit.id
   availability_zone = data.aws_availability_zones.available.names[2]
