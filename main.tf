@@ -257,7 +257,6 @@ resource "aws_ram_principal_association" "main-org" {
 # VPC Attachment section
 ################################################################################
 resource "aws_ec2_transit_gateway_vpc_attachment" "tgw_vpc_attach-public-subnets" {
-  #subnet_ids         = [aws_subnet.PublicSubnet1a.id, aws_subnet.PublicSubnet1c.id]
   subnet_ids         = [aws_subnet.PrivateSubnet1a.id, aws_subnet.PrivateSubnet1c.id]
   transit_gateway_id = aws_ec2_transit_gateway.tgw.id
   vpc_id             = aws_vpc.transit.id
@@ -289,11 +288,11 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "tgw_vpc_attach-public-subnets
 # 	}
 # }
 
-# resource "aws_ec2_transit_gateway_route" "Internet" {
-#   destination_cidr_block         = "0.0.0.0/0"
-#   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.example.id
-#   transit_gateway_route_table_id = aws_ec2_transit_gateway.example.association_default_route_table_id
-# }
+resource "aws_ec2_transit_gateway_route" "Internet" {
+  destination_cidr_block         = "0.0.0.0/0"
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.tgw_vpc_attach-public-subnets.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway.association_default_route_table.id
+}
 
 
 ################################################################################
