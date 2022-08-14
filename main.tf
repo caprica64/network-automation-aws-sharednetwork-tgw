@@ -26,8 +26,10 @@ resource "aws_vpc" "transit" {
   enable_dns_hostnames  = true
 
   tags = {
-	Name                = var.vpc_name
+	#Name                = var.vpc_name
+	Name                = "TransitVPC"
 	Project             = "Azure-AWS"
+	CostCenter          = "AoD"
   }
 }
 
@@ -190,6 +192,7 @@ resource "aws_nat_gateway" "NatGw1a" {
 
   tags = {
 	Name = "NAT GW 1a"
+	CostCenter          = "AoD"
   }
 }
 
@@ -205,6 +208,7 @@ resource "aws_nat_gateway" "NatGw1c" {
 
   tags = {
 	Name = "NAT GW 1c"
+	CostCenter          = "AoD"
   }
 }
 
@@ -226,6 +230,7 @@ resource "aws_ec2_transit_gateway" "tgw" {
   	Project     = "Azure-AWS"
   	Environment = "Dev"
   	ManagedBy   = "terraform"
+  	CostCenter          = "AoD"
   }
 }
 
@@ -237,6 +242,7 @@ resource "aws_ram_resource_share" "tgw" {
 
   tags = {
 	Name = "Central-TGW-share"
+	CostCenter          = "AoD"
   }
 }
 
@@ -270,6 +276,7 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "tgw_vpc_attach-public-subnets
 
   tags = {
 	Name = "Local-subnets-attachment"
+	CostCenter          = "AoD"
   }
 }
 
